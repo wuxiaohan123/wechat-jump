@@ -1,0 +1,9 @@
+c:\users\xiaohan\documents\visual studio 2015\Projects\jump\jump\bin\Debug\jump.exe.config
+c:\users\xiaohan\documents\visual studio 2015\Projects\jump\jump\bin\Debug\jump.exe
+c:\users\xiaohan\documents\visual studio 2015\Projects\jump\jump\bin\Debug\jump.pdb
+c:\users\xiaohan\documents\visual studio 2015\Projects\jump\jump\obj\Debug\jump.csprojResolveAssemblyReference.cache
+c:\users\xiaohan\documents\visual studio 2015\Projects\jump\jump\obj\Debug\jump.MyForm.resources
+c:\users\xiaohan\documents\visual studio 2015\Projects\jump\jump\obj\Debug\jump.Properties.Resources.resources
+c:\users\xiaohan\documents\visual studio 2015\Projects\jump\jump\obj\Debug\jump.csproj.GenerateResource.Cache
+c:\users\xiaohan\documents\visual studio 2015\Projects\jump\jump\obj\Debug\jump.exe
+c:\users\xiaohan\documents\visual studio 2015\Projects\jump\jump\obj\Debug\jump.pdb
