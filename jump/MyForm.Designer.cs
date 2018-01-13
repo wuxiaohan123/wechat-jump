@@ -29,11 +29,10 @@
 		private void InitializeComponent()
 		{
 			this.components = new System.ComponentModel.Container();
+			System.Windows.Forms.Label label2;
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MyForm));
-			this.begin = new System.Windows.Forms.Button();
 			this.label1 = new System.Windows.Forms.Label();
 			this.textBox1 = new System.Windows.Forms.TextBox();
-			this.label2 = new System.Windows.Forms.Label();
 			this.textBox2 = new System.Windows.Forms.TextBox();
 			this.timer1 = new System.Windows.Forms.Timer(this.components);
 			this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
@@ -43,32 +42,23 @@
 			this.label3 = new System.Windows.Forms.Label();
 			this.up = new System.Windows.Forms.Button();
 			this.down = new System.Windows.Forms.Button();
+			this.linkLabel1 = new System.Windows.Forms.LinkLabel();
+			label2 = new System.Windows.Forms.Label();
 			this.contextMenuStrip1.SuspendLayout();
 			this.SuspendLayout();
-			// 
-			// begin
-			// 
-			this.begin.Location = new System.Drawing.Point(97, 170);
-			this.begin.Name = "begin";
-			this.begin.Size = new System.Drawing.Size(75, 25);
-			this.begin.TabIndex = 0;
-			this.begin.Text = "开始";
-			this.begin.UseVisualStyleBackColor = true;
-			this.begin.Click += new System.EventHandler(this.begin_Click);
 			// 
 			// label1
 			// 
 			this.label1.AutoSize = true;
-			this.label1.Location = new System.Drawing.Point(9, 18);
+			this.label1.Location = new System.Drawing.Point(9, 21);
 			this.label1.Name = "label1";
 			this.label1.Size = new System.Drawing.Size(112, 15);
 			this.label1.TabIndex = 1;
 			this.label1.Text = "当前鼠标坐标：";
-			this.label1.Click += new System.EventHandler(this.label1_Click);
 			// 
 			// textBox1
 			// 
-			this.textBox1.Location = new System.Drawing.Point(127, 8);
+			this.textBox1.Location = new System.Drawing.Point(127, 18);
 			this.textBox1.Name = "textBox1";
 			this.textBox1.Size = new System.Drawing.Size(45, 25);
 			this.textBox1.TabIndex = 2;
@@ -78,17 +68,16 @@
 			// 
 			// label2
 			// 
-			this.label2.AutoSize = true;
-			this.label2.Location = new System.Drawing.Point(178, 18);
-			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(15, 15);
-			this.label2.TabIndex = 3;
-			this.label2.Text = ",";
-			this.label2.Click += new System.EventHandler(this.label2_Click);
+			label2.AutoSize = true;
+			label2.Location = new System.Drawing.Point(178, 28);
+			label2.Name = "label2";
+			label2.Size = new System.Drawing.Size(15, 15);
+			label2.TabIndex = 3;
+			label2.Text = ",";
 			// 
 			// textBox2
 			// 
-			this.textBox2.Location = new System.Drawing.Point(199, 8);
+			this.textBox2.Location = new System.Drawing.Point(199, 18);
 			this.textBox2.Name = "textBox2";
 			this.textBox2.Size = new System.Drawing.Size(45, 25);
 			this.textBox2.TabIndex = 4;
@@ -110,7 +99,6 @@
 			this.notifyIcon1.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon1.Icon")));
 			this.notifyIcon1.Text = "跳一跳辅助";
 			this.notifyIcon1.Visible = true;
-			this.notifyIcon1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon1_MouseDoubleClick);
 			// 
 			// contextMenuStrip1
 			// 
@@ -120,7 +108,6 @@
             this.exit});
 			this.contextMenuStrip1.Name = "contextMenuStrip1";
 			this.contextMenuStrip1.Size = new System.Drawing.Size(139, 52);
-			this.contextMenuStrip1.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip1_Opening);
 			// 
 			// ShowWindow
 			// 
@@ -139,16 +126,15 @@
 			// label3
 			// 
 			this.label3.AutoSize = true;
-			this.label3.Location = new System.Drawing.Point(12, 52);
+			this.label3.Location = new System.Drawing.Point(28, 83);
 			this.label3.Name = "label3";
 			this.label3.Size = new System.Drawing.Size(112, 15);
 			this.label3.TabIndex = 7;
 			this.label3.Text = "跳跃速度常数：";
-			this.label3.Click += new System.EventHandler(this.label3_Click);
 			// 
 			// up
 			// 
-			this.up.Location = new System.Drawing.Point(15, 79);
+			this.up.Location = new System.Drawing.Point(181, 62);
 			this.up.Name = "up";
 			this.up.Size = new System.Drawing.Size(75, 25);
 			this.up.TabIndex = 8;
@@ -158,7 +144,7 @@
 			// 
 			// down
 			// 
-			this.down.Location = new System.Drawing.Point(15, 110);
+			this.down.Location = new System.Drawing.Point(181, 93);
 			this.down.Name = "down";
 			this.down.Size = new System.Drawing.Size(75, 25);
 			this.down.TabIndex = 9;
@@ -166,22 +152,33 @@
 			this.down.UseVisualStyleBackColor = true;
 			this.down.Click += new System.EventHandler(this.down_Click);
 			// 
+			// linkLabel1
+			// 
+			this.linkLabel1.AutoSize = true;
+			this.linkLabel1.Location = new System.Drawing.Point(12, 126);
+			this.linkLabel1.Name = "linkLabel1";
+			this.linkLabel1.Size = new System.Drawing.Size(37, 15);
+			this.linkLabel1.TabIndex = 10;
+			this.linkLabel1.TabStop = true;
+			this.linkLabel1.Text = "帮助";
+			this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
+			// 
 			// MyForm
 			// 
-			this.AcceptButton = this.begin;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(282, 253);
+			this.ClientSize = new System.Drawing.Size(282, 153);
+			this.Controls.Add(this.linkLabel1);
 			this.Controls.Add(this.down);
 			this.Controls.Add(this.up);
 			this.Controls.Add(this.label3);
 			this.Controls.Add(this.textBox2);
-			this.Controls.Add(this.label2);
+			this.Controls.Add(label2);
 			this.Controls.Add(this.textBox1);
 			this.Controls.Add(this.label1);
-			this.Controls.Add(this.begin);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
 			this.MaximizeBox = false;
+			this.MinimizeBox = false;
 			this.Name = "MyForm";
 			this.ShowIcon = false;
 			this.ShowInTaskbar = false;
@@ -198,11 +195,8 @@
 		}
 
 		#endregion
-
-		private System.Windows.Forms.Button begin;
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.TextBox textBox1;
-		private System.Windows.Forms.Label label2;
 		private System.Windows.Forms.TextBox textBox2;
 		private System.Windows.Forms.Timer timer1;
 		private System.Windows.Forms.NotifyIcon notifyIcon1;
@@ -212,6 +206,7 @@
 		private System.Windows.Forms.Label label3;
 		private System.Windows.Forms.Button up;
 		private System.Windows.Forms.Button down;
+		private System.Windows.Forms.LinkLabel linkLabel1;
 	}
 }
 

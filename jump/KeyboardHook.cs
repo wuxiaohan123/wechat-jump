@@ -1,30 +1,35 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Runtime.InteropServices;  //StructLayout
-using System.Drawing;
 using System.Windows.Forms;
 
 namespace jump
 {
 	/// <summary>
-	/// 键盘钩子
+	/// 键盘钩子类，用到了WinAPI，全局监听键盘事件
+	///	代码来自网络
+	/// 项目地址： http://github.com/wuxiaohan/wechat-jump/
 	/// </summary>
 	class KeyboardHook
 	{
-		public event KeyEventHandler KeyDownEvent;
+		/// <summary>
+		/// 按键按下、抬起事件对象
+		/// </summary>
+		public event KeyEventHandler KeyDownEvent, KeyUpEvent;
+		/// <summary>
+		/// 按键按压事件（一个完整的按下/抬起过程）
+		/// </summary>
 		public event KeyPressEventHandler KeyPressEvent;
-		public event KeyEventHandler KeyUpEvent;
 
-		public delegate int HookProc(int nCode, Int32 wParam, IntPtr lParam);
-		static int hKeyboardHook = 0; //声明键盘钩子处理的初始值
-									  //值在Microsoft SDK的Winuser.h里查询
+		public delegate int HookProc(int nCode, Int32 wParam, IntPtr lParam);	//键盘事件处理函数，定义见后文
+		static int hKeyboardHook = 0;			//声明键盘钩子处理的初始值
+												//值在Microsoft SDK的Winuser.h里查询
 		public const int WH_KEYBOARD_LL = 13;   //线程键盘钩子监听鼠标消息设为2，全局键盘监听鼠标消息设为13
-		HookProc KeyboardHookProcedure; //声明KeyboardHookProcedure作为HookProc类型
-										//键盘结构
+		HookProc KeyboardHookProcedure;			//声明KeyboardHookProcedure作为HookProc类型
+		
+		//键盘结构
 		[StructLayout(LayoutKind.Sequential)]
+
+		//键盘钩子类
 		public class KeyboardHookStruct
 		{
 			public int vkCode;  //定一个虚拟键码。该代码必须有一个价值的范围1至254
@@ -33,15 +38,14 @@ namespace jump
 			public int time; // 指定的时间戳记的这个讯息
 			public int dwExtraInfo; // 指定额外信息相关的信息
 		}
+
 		//使用此功能，安装了一个钩子
 		[DllImport("user32.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall)]
 		public static extern int SetWindowsHookEx(int idHook, HookProc lpfn, IntPtr hInstance, int threadId);
 
-
 		//调用此函数卸载钩子
 		[DllImport("user32.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall)]
 		public static extern bool UnhookWindowsHookEx(int idHook);
-
 
 		//使用此功能，通过信息钩子继续下一个钩子
 		[DllImport("user32.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall)]
@@ -55,6 +59,9 @@ namespace jump
 		[DllImport("kernel32.dll")]
 		public static extern IntPtr GetModuleHandle(string name);
 
+		/// <summary>
+		/// 开启键盘事件全局监听
+		/// </summary>
 		public void Start()
 		{
 			// 安装键盘钩子
@@ -85,10 +92,13 @@ namespace jump
 				}
 			}
 		}
+
+		/// <summary>
+		/// 停止监听全局键盘事件
+		/// </summary>
 		public void Stop()
 		{
 			bool retKeyboard = true;
-
 
 			if (hKeyboardHook != 0)
 			{
@@ -98,27 +108,34 @@ namespace jump
 
 			if (!(retKeyboard)) throw new Exception("卸载钩子失败！");
 		}
+
 		//ToAscii职能的转换指定的虚拟键码和键盘状态的相应字符或字符
 		[DllImport("user32")]
-		public static extern int ToAscii(int uVirtKey, //[in] 指定虚拟关键代码进行翻译。
-										 int uScanCode, // [in] 指定的硬件扫描码的关键须翻译成英文。高阶位的这个值设定的关键，如果是（不压）
-										 byte[] lpbKeyState, // [in] 指针，以256字节数组，包含当前键盘的状态。每个元素（字节）的数组包含状态的一个关键。如果高阶位的字节是一套，关键是下跌（按下）。在低比特，如果设置表明，关键是对切换。在此功能，只有肘位的CAPS LOCK键是相关的。在切换状态的NUM个锁和滚动锁定键被忽略。
-										 byte[] lpwTransKey, // [out] 指针的缓冲区收到翻译字符或字符。
-										 int fuState); // [in] Specifies whether a menu is active. This parameter must be 1 if a menu is active, or 0 otherwise.
+		public static extern int ToAscii(int uVirtKey,		// [in] 指定虚拟关键代码进行翻译。
+										 int uScanCode,		// [in] 指定的硬件扫描码的关键须翻译成英文。高阶位的这个值设定的关键，如果是（不压）
+										 byte[] lpbKeyState,// [in] 指针，以256字节数组，包含当前键盘的状态。每个元素（字节）的数组包含状态的一个关键。如果高阶位的字节是一套，关键是下跌（按下）。在低比特，如果设置表明，关键是对切换。在此功能，只有肘位的CAPS LOCK键是相关的。在切换状态的NUM个锁和滚动锁定键被忽略。
+										 byte[] lpwTransKey,// [out]指针的缓冲区收到翻译字符或字符。
+										 int fuState);		// [in] Specifies whether a menu is active. This parameter must be 1 if a menu is active, or 0 otherwise.
 
 		//获取按键的状态
 		[DllImport("user32")]
 		public static extern int GetKeyboardState(byte[] pbKeyState);
 
-
 		[DllImport("user32.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall)]
 		private static extern short GetKeyState(int vKey);
 
-		private const int WM_KEYDOWN = 0x100;//KEYDOWN
-		private const int WM_KEYUP = 0x101;//KEYUP
+		private const int WM_KEYDOWN = 0x100;	//KEYDOWN
+		private const int WM_KEYUP = 0x101;		//KEYUP
 		private const int WM_SYSKEYDOWN = 0x104;//SYSKEYDOWN
-		private const int WM_SYSKEYUP = 0x105;//SYSKEYUP
+		private const int WM_SYSKEYUP = 0x105;	//SYSKEYUP
 
+		/// <summary>
+		/// 键盘事件处理
+		/// </summary>
+		/// <param name="nCode"></param>
+		/// <param name="wParam"></param>
+		/// <param name="lParam"></param>
+		/// <returns></returns>
 		private int KeyboardHookProc(int nCode, Int32 wParam, IntPtr lParam)
 		{
 			// 侦听键盘事件

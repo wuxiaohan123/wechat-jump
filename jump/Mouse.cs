@@ -1,15 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 using System.Runtime.InteropServices;  //StructLayout
 using System.Drawing;
 using System.Windows.Forms;
 
 namespace jump
 {
+	/// <summary>
+	/// 鼠标API封装
+	/// 包括鼠标事件的监听以及鼠标的模拟点击
+	/// 作者：吴晓晗
+	/// 部分代码来自网络
+	/// 项目地址： http://github.com/wuxiaohan/wechat-jump/
+	/// </summary>
 	class Mouse :MouseWinAPI
 	{
 		//屏幕分辨率获取
@@ -19,7 +21,7 @@ namespace jump
 		/// <summary>
 		/// 获取当前鼠标位置
 		/// </summary>
-		/// <returns></returns>
+		/// <returns>Point类型坐标</returns>
 		public static Point GetPosition()
 		{
 			Point point = new Point(0, 0);
@@ -70,30 +72,31 @@ namespace jump
 		/// <summary>
 		/// 发送模拟左键点击事件
 		/// </summary>
-		/// <param name="millisecond">点击时长</param>
+		/// <param name="millisecond">点击时长（ms）</param>
 		public static void LeftClick(int millisecond)
 		{
+			//点击时长不应该超过10秒或为负
 			if (millisecond <= 0 || millisecond > 10000)
 				return;
 
 			System.Timers.Timer timer = new System.Timers.Timer(millisecond);
 			timer.Enabled = false;
 
-			timer.Elapsed += new System.Timers.ElapsedEventHandler(theout);	//到达时间的时候执行事件；
+			timer.Elapsed += new System.Timers.ElapsedEventHandler(theout);	//到达时间的时候执行绑定事件；
 			timer.AutoReset = false;	//设置是执行一次（false）还是一直执行(true)；
 			timer.Enabled = true;		//是否执行System.Timers.Timer.Elapsed事件；
+
+			//发送鼠标左键按下事件（定时结束后调用theout函数结束按下状态，恢复正常）
 			mouse_event(MouseEventFlag.LeftDown, 0, 0, 0, UIntPtr.Zero);
 		}
 
-		//
+		//定时器到达时执行本函数：发送一组点击/释放动作（目的是结束当前左键Down的状态）
 		public static void theout(object source, System.Timers.ElapsedEventArgs e)
 		{
 			mouse_event(MouseEventFlag.LeftDown, 0, 0, 0, UIntPtr.Zero);
 			mouse_event(MouseEventFlag.LeftUp, 0, 0, 0, UIntPtr.Zero);
 		}
 	}
-
-
 
 	/// <summary>
 	/// 鼠标相关操作的Win32 API
